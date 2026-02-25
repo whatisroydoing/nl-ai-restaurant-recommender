@@ -102,9 +102,11 @@ if submit:
     payload = {}
     if selected_area != "Any": payload["location"] = selected_area
     if selected_cuisines: payload["cuisine"] = selected_cuisines[0]
-    payload["price_min"] = price_range[0]
-    payload["price_max"] = price_range[1]
-    payload["min_rating"] = min_rating
+    # Only apply price filter when the user has actually constrained the range
+    if price_range[0] > 100: payload["price_min"] = price_range[0]
+    if price_range[1] < 5000: payload["price_max"] = price_range[1]
+    # Only apply rating filter when the user wants above 0
+    if min_rating > 0.0: payload["min_rating"] = min_rating
     payload["max_results"] = max_results
 
     try:
@@ -115,7 +117,8 @@ if submit:
 
     with st.spinner("Finding the best spots for you..."):
         pref = Preference(
-            city="Bangalore", # Default city
+            # Don't filter by city — the dataset uses 'Bangalore' but records
+            # may be inconsistent; filtering by location alone is sufficient.
             location=validated.location,
             price_min=validated.price_min,
             price_max=validated.price_max,
