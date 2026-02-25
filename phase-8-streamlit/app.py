@@ -6,22 +6,35 @@ import pandas as pd
 from dotenv import load_dotenv
 
 # Path setup: ensure phase-1, phase-2, phase-3 packages are importable
-_PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.abspath(os.path.join(_HERE, os.pardir))
+
 for _phase in ("phase-1", "phase-2", "phase-3"):
     _p = os.path.join(_PROJECT_ROOT, _phase)
-    if _p not in sys.path:
+    if os.path.exists(_p) and _p not in sys.path:
         sys.path.insert(0, _p)
+    elif not os.path.exists(_p):
+        # Fallback for Streamlit Cloud if structure is slightly different
+        # Or if running from a different CWD
+        _fallback = os.path.abspath(os.path.join(os.getcwd(), _phase))
+        if os.path.exists(_fallback) and _fallback not in sys.path:
+            sys.path.insert(0, _fallback)
 
 # Phase imports
-from restaurant_recommender import Preference, RestaurantDataStore, retrieve
-from restaurant_recommender.loader import load_dataset_from_hf
-from preference_validation.validator import validate_preference
-from preference_validation.models import PreferenceValidationError
-from llm_recommender.recommender import recommend_with_explanations
-from llm_recommender.models import RecommendSettings
+try:
+    from restaurant_recommender import Preference, RestaurantDataStore, retrieve
+    from restaurant_recommender.loader import load_dataset_from_hf
+    from preference_validation.validator import validate_preference
+    from preference_validation.models import PreferenceValidationError
+    from llm_recommender.recommender import recommend_with_explanations
+    from llm_recommender.models import RecommendSettings
+except ImportError as e:
+    st.error(f"Failed to import project modules. Path info: {_PROJECT_ROOT}. Error: {e}")
+    st.stop()
 
-# Load environment variables
+# Load environment variables (from root or local)
 load_dotenv(os.path.join(_PROJECT_ROOT, ".env"))
+load_dotenv(".env")
 
 # Page Setup
 st.set_page_config(page_title="Zomato AI Recommender", page_icon="🍴", layout="wide")
