@@ -1,74 +1,164 @@
-/* Zomato-inspired Dark Theme for Streamlit */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
+/* ── Design tokens ── */
+:root {
+    --red: #cb202d;
+    --red-dark: #9e1a23;
+    --red-light: #e8384f;
+    --red-glow: rgba(203, 32, 45, 0.35);
+    --bg-primary: #0f0f1a;
+    --text-primary: #f0f0f5;
+    --text-secondary: #a0a0b8;
+}
+
+/* ── App Container ── */
 [data-testid="stAppViewContainer"] {
     background: linear-gradient(160deg, #0a0a1a 0%, #12101f 30%, #1a0f1e 55%, #0f0f1a 100%);
-    color: #f0f0f5;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
 }
 
 [data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
+    background: rgba(0, 0, 0, 0);
 }
 
-[data-testid="stSidebar"] {
-    background-color: #1a1a2e;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+[data-testid="stToolbar"] {
+    right: 2rem;
 }
 
-h1, h2, h3 {
+/* ── Ambient Glow ── */
+.glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+}
+
+.glow--1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--red-glow), transparent 70%);
+    top: -150px;
+    left: -150px;
+}
+
+.glow--2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(203, 32, 45, 0.2), transparent 70%);
+    bottom: -150px;
+    right: -150px;
+}
+
+/* ── Typography ── */
+h1,
+h2,
+h3 {
     font-family: 'Outfit', sans-serif;
 }
 
-.hero-text {
+/* ── Hero ── */
+.hero-container {
     text-align: center;
-    padding: 2rem 0;
+    padding: 3rem 0 2rem;
+}
+
+.hero-logo {
+    width: 320px;
+    margin-bottom: 0.5rem;
+    filter: invert(18%) sepia(95%) saturate(6000%) hue-rotate(348deg) brightness(85%) contrast(95%);
+}
+
+.hero-title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
 }
 
 .hero-accent {
-    color: #cb202d;
-    font-weight: 800;
+    background: linear-gradient(135deg, var(--red), var(--red-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Card Styling */
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+/* ── Metrics ── */
+[data-testid="stMetric"] {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 10px 20px !important;
+    text-align: center;
+    backdrop-filter: blur(12px);
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--red-light) !important;
+    font-weight: 700 !important;
+}
+
+/* ── Widgets ── */
+.stSelectbox,
+.stMultiSelect,
+.stSlider,
+.stNumberInput {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+}
+
+/* Custom card styling */
 .rec-card {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 16px;
     backdrop-filter: blur(16px);
-    transition: transform 0.25s ease;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
 }
 
 .rec-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(203, 32, 45, 0.3);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    border-color: rgba(203, 32, 45, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(203, 32, 45, 0.1);
 }
 
 .rec-card-rank {
-    background: linear-gradient(135deg, #cb202d, #e8384f);
-    color: white;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--red), var(--red-light));
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
     font-weight: 800;
-    font-size: 1.2rem;
-    margin-bottom: 12px;
+    font-size: 1.3rem;
+    color: white;
 }
 
-.rec-card-title {
-    font-size: 1.25rem;
+.rec-card-body {
+    flex: 1;
+}
+
+.rec-card-name {
+    font-family: 'Outfit';
+    font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 .rec-card-explanation {
+    color: var(--text-secondary);
     font-size: 0.95rem;
-    color: #a0a0b8;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .tag {
@@ -78,7 +168,27 @@ h1, h2, h3 {
     background: rgba(255, 255, 255, 0.06);
     padding: 4px 12px;
     border-radius: 100px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    color: #f0f0f5;
     margin-right: 8px;
     margin-bottom: 8px;
+}
+
+/* Center button */
+.stButton button {
+    width: 100%;
+    background: linear-gradient(135deg, var(--red), var(--red-light)) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem !important;
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(203, 32, 45, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+.stButton button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(203, 32, 45, 0.5) !important;
 }
