@@ -1,0 +1,84 @@
+/* Zomato-inspired Dark Theme for Streamlit */
+
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(160deg, #0a0a1a 0%, #12101f 30%, #1a0f1e 55%, #0f0f1a 100%);
+    color: #f0f0f5;
+}
+
+[data-testid="stHeader"] {
+    background: rgba(0,0,0,0);
+}
+
+[data-testid="stSidebar"] {
+    background-color: #1a1a2e;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+h1, h2, h3 {
+    font-family: 'Outfit', sans-serif;
+}
+
+.hero-text {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.hero-accent {
+    color: #cb202d;
+    font-weight: 800;
+}
+
+/* Card Styling */
+.rec-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(16px);
+    transition: transform 0.25s ease;
+}
+
+.rec-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(203, 32, 45, 0.3);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.rec-card-rank {
+    background: linear-gradient(135deg, #cb202d, #e8384f);
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.rec-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.rec-card-explanation {
+    font-size: 0.95rem;
+    color: #a0a0b8;
+    margin-bottom: 16px;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}

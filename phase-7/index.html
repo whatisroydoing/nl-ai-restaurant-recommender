@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Zomato AI Restaurant Recommender — Find the best places to eat in Bangalore with AI-powered recommendations.">
+    <title>Zomato AI Recommender</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ═══ Ambient glow blobs ═══ -->
+    <div class="glow glow--1" aria-hidden="true"></div>
+    <div class="glow glow--2" aria-hidden="true"></div>
+
+    <main>
+        <!-- ═══ Hero ═══ -->
+        <header class="hero" id="hero">
+            <img src="zomato-logo.png" alt="Zomato" class="hero__logo">
+            <h1 class="hero__title">AI <span class="hero__accent">Recommender</span></h1>
+            <p class="hero__subtitle">Helping you find the best places to eat in <span
+                    class="hero__accent">Bangalore</span> city</p>
+            <div class="hero__stats" id="hero-stats">
+                <span class="stat">📍 <strong id="stat-areas">—</strong> Localities</span>
+                <span class="stat__divider">|</span>
+                <span class="stat">🍽️ <strong id="stat-cuisines">—</strong> Cuisines</span>
+            </div>
+        </header>
+
+        <!-- ═══ Preference Form ═══ -->
+        <section class="form-section" id="form-section">
+            <form id="preference-form" novalidate>
+                <div class="form-grid">
+                    <!-- Row 1: Area (searchable dropdown) + Cuisine (multi-select) -->
+                    <div class="form-group">
+                        <label for="area-input">📍 Select Area</label>
+                        <div class="dropdown" id="area-dropdown">
+                            <input type="text" id="area-input" placeholder="Search area…" autocomplete="off"
+                                role="combobox" aria-expanded="false" aria-haspopup="listbox">
+                            <div class="dropdown__arrow" aria-hidden="true">▾</div>
+                            <ul class="dropdown__list" id="area-list" role="listbox"></ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>🍴 Cuisines (Multi-select)</label>
+                        <div class="multiselect" id="cuisine-multiselect">
+                            <div class="multiselect__chips" id="cuisine-chips">
+                                <input type="text" class="multiselect__input" id="cuisine-input"
+                                    placeholder="Search cuisines…" autocomplete="off" role="combobox"
+                                    aria-expanded="false">
+                            </div>
+                            <ul class="dropdown__list" id="cuisine-list" role="listbox"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Price Range Slider + Min Rating -->
+                    <div class="form-group form-group--full">
+                        <label>💰 Price for two (₹)</label>
+                        <div class="range-slider" id="price-slider">
+                            <div class="range-slider__labels">
+                                <span id="price-label-min">₹100</span>
+                                <span id="price-label-max">₹5000+</span>
+                            </div>
+                            <div class="range-slider__track" id="range-track">
+                                <div class="range-slider__fill" id="range-fill"></div>
+                                <input type="range" id="price-min" min="100" max="5000" step="100" value="100"
+                                    class="range-slider__input range-slider__input--min">
+                                <input type="range" id="price-max" min="100" max="5000" step="100" value="5000"
+                                    class="range-slider__input range-slider__input--max">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Min Rating + Max Results -->
+                    <div class="form-group">
+                        <label for="min-rating">⭐ Min Rating</label>
+                        <div class="rating-control">
+                            <button type="button" class="rating-btn" id="rating-minus"
+                                aria-label="Decrease rating">−</button>
+                            <input type="number" id="min-rating" name="min_rating" min="0" max="5" step="0.5" value=""
+                                placeholder="0.0">
+                            <button type="button" class="rating-btn" id="rating-plus"
+                                aria-label="Increase rating">+</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="max-results">📊 Max Results</label>
+                        <input type="number" id="max-results" name="max_results" min="1" max="10" value="5"
+                            autocomplete="off">
+                    </div>
+                </div>
+
+                <button type="submit" class="cta-btn" id="submit-btn">
+                    <span class="cta-btn__text">Get Recommendations ✨</span>
+                    <span class="cta-btn__loading" hidden>
+                        <span class="spinner"></span> Finding restaurants…
+                    </span>
+                </button>
+            </form>
+        </section>
+
+        <!-- ═══ Error Banner ═══ -->
+        <div class="error-banner" id="error-banner" hidden>
+            <span class="error-banner__icon">⚠️</span>
+            <span class="error-banner__text" id="error-text"></span>
+            <button class="error-banner__close" id="error-close" aria-label="Close">&times;</button>
+        </div>
+
+        <!-- ═══ Results Section ═══ -->
+        <section class="results-section" id="results-section" hidden>
+            <div class="results-header">
+                <h2 class="results-title">🎯 Your Recommendations</h2>
+            </div>
+
+            <!-- Loading skeletons -->
+            <div class="skeleton-grid" id="skeleton-grid" hidden>
+                <div class="skeleton-card">
+                    <div class="skeleton-line skeleton-line--title"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line skeleton-line--short"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line skeleton-line--title"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line skeleton-line--short"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-line skeleton-line--title"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line skeleton-line--short"></div>
+                </div>
+            </div>
+
+            <!-- Actual results -->
+            <div class="results-grid" id="results-grid"></div>
+
+            <!-- Empty state -->
+            <div class="empty-state" id="empty-state" hidden>
+                <div class="empty-state__icon">🍽️</div>
+                <h3>No restaurants found</h3>
+                <p>Try adjusting your filters — broaden the area, lower the rating, or try a different cuisine.</p>
+            </div>
+        </section>
+
+        <!-- ═══ Footer ═══ -->
+        <footer class="footer">
+            <p>Built with ❤️ — AI-Powered Restaurant Recommendations through <span id="footer-model">AI</span></p>
+        </footer>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

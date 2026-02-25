@@ -1,0 +1,6 @@
+streamlit
+datasets
+python-dotenv
+pandas
+flask
+pytest
