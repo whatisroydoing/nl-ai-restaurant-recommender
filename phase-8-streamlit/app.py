@@ -41,7 +41,39 @@ st.set_page_config(page_title="Zomato AI Recommender", page_icon="🍴", layout=
 def apply_custom_style():
     with open(os.path.join(_HERE, "style.css")) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    
+
+    # Extra style: force-dark the BaseWeb popover portal (rendered at body level,
+    # outside the Streamlit app container, so needs its own injection)
+    st.markdown("""
+<style>
+/* ── Popover portal dark override ── */
+body [data-baseweb="popover"],
+body [data-baseweb="popover"] > div,
+body [data-baseweb="popover"] [data-baseweb="menu"] {
+    background-color: #1a1a2e !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+}
+body [data-baseweb="popover"] ul {
+    background-color: #1a1a2e !important;
+    padding: 4px 0 !important;
+}
+body [data-baseweb="popover"] li,
+body [data-baseweb="popover"] [role="option"] {
+    background-color: transparent !important;
+    color: #a0a0b8 !important;
+}
+body [data-baseweb="popover"] li:hover,
+body [data-baseweb="popover"] [role="option"]:hover,
+body [data-baseweb="popover"] li[aria-selected="true"],
+body [data-baseweb="popover"] [role="option"][aria-selected="true"] {
+    background-color: rgba(203,32,45,0.15) !important;
+    color: #f0f0f5 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
     # Background Glow Blobs
     st.markdown('<div class="glow glow--1"></div><div class="glow glow--2"></div>', unsafe_allow_html=True)
 
@@ -75,13 +107,16 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Stats row
-m_col1, m_col2, m_col3 = st.columns(3)
-m_col1.metric("Localities", len(areas))
-m_col2.metric("Cuisines", len(cuisines))
-m_col3.metric("Restaurants", len(records))
-
-st.markdown("<br>", unsafe_allow_html=True)
+# Stats pills (Localities + Cuisines)
+st.markdown(f"""
+<div style="text-align:center; margin-bottom: 2rem;">
+    <div class="hero__stats">
+        <span class="stat">📍 <strong>{len(areas)}</strong> Localities</span>
+        <span class="stat__divider">|</span>
+        <span class="stat">🍽️ <strong>{len(cuisines)}</strong> Cuisines</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ── Preference Form (Main Layout) ──────────────────────────────
 with st.container():

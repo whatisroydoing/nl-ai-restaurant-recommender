@@ -86,21 +86,101 @@ h3 {
 .hero-subtitle {
     font-size: 1.1rem;
     color: var(--text-secondary);
+    margin-bottom: 1.5rem;
 }
 
-/* ── Metrics ── */
-[data-testid="stMetric"] {
+/* ── Hero Stats Pills ── */
+.hero__stats {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 10px 20px !important;
-    text-align: center;
+    border-radius: 100px;
+    padding: 10px 28px;
+    font-size: 0.9rem;
     backdrop-filter: blur(12px);
 }
 
-[data-testid="stMetricValue"] {
-    color: var(--red-light) !important;
-    font-weight: 700 !important;
+.stat strong {
+    color: var(--red-light);
+    font-weight: 700;
+}
+
+.stat__divider {
+    color: #6b6b80;
+}
+
+/* ── Dark Dropdown Overrides (selectbox + multiselect) ── */
+
+/* Container background */
+[data-baseweb="select"]>div {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-primary) !important;
+    border-radius: 12px !important;
+}
+
+[data-baseweb="select"]>div:hover {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Dropdown list panel */
+[data-baseweb="popover"] {
+    background: #1a1a2e !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-baseweb="menu"] {
+    background: #1a1a2e !important;
+    border-radius: 12px !important;
+}
+
+[data-baseweb="menu"] ul {
+    background: #1a1a2e !important;
+    padding: 4px 0 !important;
+}
+
+[data-baseweb="menu"] li {
+    background: transparent !important;
+    color: var(--text-secondary) !important;
+}
+
+[data-baseweb="menu"] li:hover,
+[data-baseweb="menu"] li[aria-selected="true"] {
+    background: rgba(203, 32, 45, 0.15) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Selected option text in the control */
+[data-baseweb="select"] [data-testid="stMarkdownContainer"],
+[data-baseweb="select"] span {
+    color: var(--text-primary) !important;
+}
+
+/* Multi-select chips / tags */
+[data-baseweb="tag"] {
+    background: linear-gradient(135deg, #9e1a23, #cb202d) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 100px !important;
+}
+
+[data-baseweb="tag"] span {
+    color: #fff !important;
+}
+
+[data-baseweb="tag"] [role="presentation"] {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Search input inside select */
+[data-baseweb="select"] input {
+    color: var(--text-primary) !important;
+    caret-color: var(--red-light);
 }
 
 /* ── Widgets ── */

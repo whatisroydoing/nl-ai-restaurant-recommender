@@ -70,7 +70,7 @@ class LLMError(RuntimeError):
 
 @dataclass(frozen=True)
 class RecommendSettings:
-    model: str = "gpt-4o-mini"
+    model: str = "grok-2-latest"
     top_k_candidates: int = 12
     max_results: int = 5
     timeout_s: float = 20.0

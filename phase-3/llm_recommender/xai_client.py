@@ -17,24 +17,24 @@ class LLMClient:
 
 
 @dataclass(frozen=True)
-class OpenAIChatCompletionsClient(LLMClient):
+class XAIChatCompletionsClient(LLMClient):
     """
-    Minimal OpenAI Chat Completions client using stdlib HTTP.
+    Minimal XAI (Grok) Chat Completions client using stdlib HTTP.
 
     Env:
-    - OPENAI_API_KEY (required for real calls)
-    - OPENAI_BASE_URL (optional, default https://api.openai.com/v1)
+    - XAI_API_KEY (required for real calls)
+    - XAI_BASE_URL (optional, default https://api.x.ai/v1)
     """
 
     api_key: Optional[str] = None
-    base_url: str = "https://api.openai.com/v1"
+    base_url: str = "https://api.x.ai/v1"
 
     def generate(self, *, model: str, messages: List[Dict[str, str]], timeout_s: float) -> str:
-        api_key = self.api_key or os.environ.get("OPENAI_API_KEY")
+        api_key = self.api_key or os.environ.get("XAI_API_KEY")
         if not api_key:
-            raise LLMError("OPENAI_API_KEY is not set")
+            raise LLMError("XAI_API_KEY is not set")
 
-        base_url = os.environ.get("OPENAI_BASE_URL", self.base_url).rstrip("/")
+        base_url = os.environ.get("XAI_BASE_URL", self.base_url).rstrip("/")
         url = f"{base_url}/chat/completions"
 
         body: Dict[str, Any] = {
@@ -64,9 +64,9 @@ class OpenAIChatCompletionsClient(LLMClient):
                 detail = e.read().decode("utf-8")
             except Exception:
                 detail = ""
-            raise LLMError(f"OpenAI HTTP error {e.code}: {detail or e.reason}") from e
+            raise LLMError(f"XAI HTTP error {e.code}: {detail or e.reason}") from e
         except Exception as e:
-            raise LLMError(f"OpenAI request failed: {e}") from e
+            raise LLMError(f"XAI request failed: {e}") from e
         finally:
             _ = time.time() - start
 
@@ -74,5 +74,5 @@ class OpenAIChatCompletionsClient(LLMClient):
             payload = json.loads(raw)
             return payload["choices"][0]["message"]["content"]
         except Exception as e:
-            raise LLMError(f"Unexpected OpenAI response shape: {e}") from e
+            raise LLMError(f"Unexpected XAI response shape: {e}") from e
 

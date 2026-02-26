@@ -3,14 +3,14 @@ from .models import (
     RecommendSettings,
     Recommendation,
 )
-from .openai_client import OpenAIChatCompletionsClient
+from .xai_client import XAIChatCompletionsClient
 from .recommender import recommend_with_explanations
 
 __all__ = [
     "CandidateRestaurant",
     "Recommendation",
     "RecommendSettings",
-    "OpenAIChatCompletionsClient",
+    "XAIChatCompletionsClient",
     "recommend_with_explanations",
 ]
 

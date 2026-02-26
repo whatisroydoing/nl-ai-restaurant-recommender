@@ -34,7 +34,7 @@ class TestRecommendationResponse:
     def test_to_dict(self):
         resp = RecommendationResponse(
             request_id="abc-123",
-            model_used="gpt-4o-mini",
+            model_used="grok-2-latest",
             filters_applied={"city": "Banashankari"},
             recommendations=[
                 RecommendationItem(rank=1, restaurant_name="Spice Garden", explanation="Good."),
@@ -42,7 +42,7 @@ class TestRecommendationResponse:
         )
         d = resp.to_dict()
         assert d["request_id"] == "abc-123"
-        assert d["model_used"] == "gpt-4o-mini"
+        assert d["model_used"] == "grok-2-latest"
         assert d["filters_applied"] == {"city": "Banashankari"}
         assert len(d["recommendations"]) == 1
         assert d["recommendations"][0]["restaurant_name"] == "Spice Garden"

@@ -7,7 +7,7 @@ from .models import (
     RecommendSettings,
     Recommendation,
 )
-from .openai_client import LLMClient, OpenAIChatCompletionsClient
+from .xai_client import LLMClient, XAIChatCompletionsClient
 from .parser import ParsedLLMResult, parse_recommendations
 from .prompting import build_messages
 
@@ -99,7 +99,7 @@ def recommend_with_explanations(
     desired = max(1, min(desired, len(top_k)))
 
     messages = build_messages(preference, top_k, desired_results=desired)
-    client = client or OpenAIChatCompletionsClient()
+    client = client or XAIChatCompletionsClient()
 
     try:
         raw = client.generate(model=settings.model, messages=messages, timeout_s=settings.timeout_s)
